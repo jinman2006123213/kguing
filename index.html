@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <title>버튼 클릭 예제</title>
+    <title>무기 강화 게임</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>버튼 클릭 테스트</h1>
-    </header>
-    <main>
-        <div class="container">
-            <button id="generateBtn">클릭하세요!</button></div>
-		<div id="gridContainer"></div>
-    </main>
-    <script src="./script.js"></script>
+    <h1>무기 강화 게임</h1>
+    <div id="weaponStatus">
+        <img id="weaponImage" src="sword1.png" alt="무기 이미지" />
+        현재 무기 상태: [ +1 무기 ]
+    </div>
+    <button id="enhanceButton">강화하기</button>
+    <div id="resultMessage"></div>
+    
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,37 +1,35 @@
-// 버튼 요소를 선택합니다.
-const generateButton = document.getElementById('generateBtn');
-const gridContainer = document.getElementById('gridContainer');
-let imageCount = 0; // 이미지 개수를 추적하는 변수
+let currentLevel = 1; // 현재 무기 강화 상태
+let enhanceButton = document.getElementById('enhanceButton');
+let weaponStatus = document.getElementById('weaponStatus');
+let resultMessage = document.getElementById('resultMessage');
+let weaponImage = document.getElementById('weaponImage');
 
-// 클릭 이벤트에 대한 함수를 정의합니다.
-function handleButtonClick() {
-    // 이미지 개수가 30개 미만일 때만 이미지 생성
-    if (imageCount < 30) {
-        // 랜덤 숫자를 생성합니다.
-        const randomNumber = Math.floor(Math.random() * 1000) + 1; // 1부터 1000까지의 랜덤 숫자 생성
+// 무기 이미지 배열 (인터넷에서 가져온 이미지 URL)
+const weaponImages = [
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sword_icon_1.png/64px-Sword_icon_1.png', // +1 무기
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Sword_icon_2.png/64px-Sword_icon_2.png', // +2 무기
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Sword_icon_3.png/64px-Sword_icon_3.png', // +3 무기
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Sword_icon_4.png/64px-Sword_icon_4.png', // +4 무기
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sword_icon_5.png/64px-Sword_icon_5.png'  // +5 무기
+];
 
-        // 새로운 이미지 요소를 생성합니다.
-        const img = document.createElement('img');
-        img.src = `https://picsum.photos/500?random=${randomNumber}`; // 랜덤 숫자를 URL에 추가
-        img.alt = '랜덤 이미지'; // 이미지 설명 추가  
-        
-        // 클릭 이벤트 리스너를 추가하여 이미지 클릭 시 삭제하도록 설정
-        img.addEventListener('click', function() {
-            gridContainer.removeChild(img); // 클릭된 이미지를 삭제
-            imageCount--; // 이미지 개수 감소
-        });
+enhanceButton.addEventListener('click', function() {
+    let y = 100 - 10 * currentLevel; // y 확률 계산
+    let randomChance = Math.random() * 100; // 0-100 사이의 랜덤 수 생성
 
-        // gridContainer에 이미지를 추가합니다.
-        gridContainer.appendChild(img);
-        imageCount++; // 이미지 개수 증가
+    if (randomChance < y) {
+        currentLevel++; // 강화 성공
+        resultMessage.innerText = `강화 성공! 현재 무기 상태: [ +${currentLevel} 무기 ]`;
     } else {
-        // 이미지 갯수가 30개 초과 시 confirm 창 띄우기
-        if (confirm('이미지가 30개 찼습니다. 모든 사진을 지우시겠습니까?')) {
-            gridContainer.innerHTML = ''; // 모든 이미지를 삭제
-            imageCount = 0; // 이미지 개수 초기화
+        resultMessage.innerText = `강화 실패! 현재 무기 상태: [ +${currentLevel} 무기 ]`;
+        
+        // 50% 확률로 강화 상태 강등
+        if (Math.random() < 0.5 && currentLevel > 1) {
+            currentLevel--; // 강화 상태 강등
+            resultMessage.innerText += ` 강등되어 [ +${currentLevel} 무기 ]가 되었습니다.`;
         }
     }
-}
 
-// 선택한 버튼에 이벤트 리스너를 추가합니다.
-generateButton.addEventListener('click', handleButtonClick);
+    // 무기 이미지 업데이트
+    weaponStatus.innerHTML = `<img id="weaponImage" src="${weaponImages[currentLevel - 1]}" alt="무기 이미지" />현재 무기 상태: [ +${currentLevel} 무기 ]`;
+});
